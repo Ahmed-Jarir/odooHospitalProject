@@ -14,8 +14,24 @@ class HospitalPatient(models.Model):
     age = fields.Integer(string='Age', compute='_compute_age', Tracking=True)
     gender = fields.Selection([('male','Male'), ('female','Female')],string= 'Gender', Tracking=True)
     active = fields.Boolean(string='active', default=True)
+    state = fields.Selection([('draft','draft'), ('confirm','Confirmed'),('done','Done'), ('cancel','Cancel')], default='draft', string='Status', Tracking=True)
+    ## functions ##
 
+    ## state functions ##
+    def action_confirm(self):
+        self.state = 'confirm'
+    def action_done(self):
+        self.state = 'done'
+    def action_draft(self):
+        self.state = 'draft'
+    def action_cancel(self):
+        self.state = 'cancel'
+    ## end of state functions ##
 
+    ## action functions ##
+    ## end action functions ##
+
+    ## dependant functions ##
     @api.depends('date_of_birth')
     def _compute_age(self):
         for record in self:
@@ -24,3 +40,6 @@ class HospitalPatient(models.Model):
                 record.age = date.today().year - record.date_of_birth.year
             else:
                 record.age = 0
+    ## end dependant functions ##
+
+    ## end functions ##
