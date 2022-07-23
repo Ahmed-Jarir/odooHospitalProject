@@ -8,13 +8,18 @@ class HospitalPatient(models.Model):
     _inherit=["mail.thread", "mail.activity.mixin"]
     _description = "hospital_patient"
 
+    image = fields.Binary(string="Patient image")
+
     name = fields.Char(string='Name', required=True, translate=True, Tracking=True)
     ref = fields.Char(string='Reference', Tracking=True)
     date_of_birth = fields.Date(string='Date of birth')
+
     age = fields.Integer(string='Age', compute='_compute_age', Tracking=True)
     gender = fields.Selection([('male','Male'), ('female','Female')],string= 'Gender', Tracking=True)
     active = fields.Boolean(string='active', default=True)
+
     state = fields.Selection([('draft','draft'), ('confirm','Confirmed'),('done','Done'), ('cancel','Cancel')], default='draft', string='Status', Tracking=True)
+
     ## functions ##
 
     ## state functions ##

@@ -5,11 +5,17 @@
         <field name="model">hospital.patient</field>
         <field name="arch" type="xml">
             <tree>
+                <header>
+                    <button name="action_done" string="Mark As Done" class="btn-primary"
+                        confirm="are you sure that you want to set this as done?"
+                        type="object"/>
+                </header>
                 <field name="name" string="Patient Name"/>
                 <field name="ref"/>
                 <field name="date_of_birth"/>
                 <field name="age"/>
                 <field name="gender"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -44,6 +50,7 @@
                         <!--end buttons-->
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
                     </header>
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
                             <field name="name"/>

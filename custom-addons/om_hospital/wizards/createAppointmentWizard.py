@@ -6,8 +6,16 @@ class CreateAppointmentWizard(models.TransientModel):
     _inherit=["mail.thread", "mail.activity.mixin"]
     _description = "hospital_appointment"
 
-    name = fields.Char(string='Name', required=True)
-    patient_id = fields.Many2one('hospital.patient', string='Patient')
+    appointment_time = fields.Datetime(string='Name')
+    patient_id = fields.Many2one('hospital.patient', string='Patient', required=True)
 
     def make_an_appointment(self):
-        print("")
+        vals = {
+            "patient_id": self.patient_id.id,
+            "appointment_time": self.appointment_time
+        }
+        self.env['hospital.appointment'].create(vals)
+    def view_appointments(self):
+        action = self.env.ref('om_hospital.action_hospital_appointment').read()[0]
+        action['domain'] = [('patient_id', '=', self.patient_id.id)]
+        return action

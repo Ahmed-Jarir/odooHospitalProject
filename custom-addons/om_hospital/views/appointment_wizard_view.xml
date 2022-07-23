@@ -6,11 +6,12 @@
             <field name="arch" type="xml">
                 <form string="Create an appointment">
                     <group>
-                        <field name="name"/>
                         <field name="patient_id"/>
+                        <field name="appointment_time"/>
                     </group>
                     <footer>
                         <button string="make an appointment" name="make_an_appointment" class="btn-primary" type="object"/>
+                        <button string="view appointments" name="view_appointments" class="btn-primary" type="object"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
