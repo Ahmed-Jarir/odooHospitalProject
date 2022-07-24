@@ -46,5 +46,13 @@ class HospitalPatient(models.Model):
             else:
                 record.age = 0
     ## end dependant functions ##
+    ## get functions ##
+    def name_get(self):
+        res = []
+        for rec in self:
+            name = "[" + str(rec.id) + "] " + rec.name
+            res.append((rec.id,name))
+        return res
+    ## end get functions ##
 
     ## end functions ##
