@@ -4,8 +4,9 @@
         <field name="name">hospital.appointment.tree</field>
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree multi_edit="1">
                 <field name="patient_id"/>
+                <field name="doctor"/>
                 <field name="appointment_time"/>
                 <field name="booking_date"/>
                 <field name="gender"/>
@@ -19,16 +20,49 @@
            <form>
                <sheet>
                    <group>
+                       <div class="oe_title">
+                          <h1>
+                              <field name="patient_id" readonly="1"/>
+                          </h1>
+                       </div>
                        <group>
-                           <field name="patient_id"/>
                            <field name="gender"/>
                        </group>
                        <group>
+                           <field name="doctor"/>
                            <field name="appointment_time"/>
                            <field name="booking_date"/>
                        </group>
                    </group>
                </sheet>
+                <notebook>
+                    <page string="Doctor Prescription" name="doctor_presc">
+                        <group>
+                            <field name="prescription"/>
+                        </group>
+                    </page>
+                    <page string="Medicine" name="medicine">
+                        <field name="prescription_line_ids">
+                            <tree>
+                                <field name="medicine"/>
+                                <field name="qty"/>
+                            </tree>
+                            <form>
+                                <group>
+                                    <field name="medicine"/>
+                                </group>
+                                <group>
+                                    <field name="qty"/>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                    <page string="Other Info" name="other_info">
+                        <group>
+                            <field name="description"/>
+                        </group>
+                    </page>
+                </notebook>
                <div class="oe_chatter">
                         <field name="message_follower_ids" groups="base.group_user"/>
                         <field name="activity_ids"/>

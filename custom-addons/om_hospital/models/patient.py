@@ -1,6 +1,6 @@
 from datetime import date
 from odoo import api, fields, models
-from odoo.odoo import exceptions
+from odoo.exceptions import ValidationError
 
 
 class HospitalPatient(models.Model):
@@ -14,11 +14,14 @@ class HospitalPatient(models.Model):
     ref = fields.Char(string='Reference', Tracking=True)
     date_of_birth = fields.Date(string='Date of birth')
 
-    age = fields.Integer(string='Age', compute='_compute_age', Tracking=True)
+    age = fields.Integer(string='Age', compute='_compute_age', Tracking=True, store=True)
     gender = fields.Selection([('male','Male'), ('female','Female')],string= 'Gender', Tracking=True)
     active = fields.Boolean(string='active', default=True)
 
-    state = fields.Selection([('draft','draft'), ('confirm','Confirmed'),('done','Done'), ('cancel','Cancel')], default='draft', string='Status', Tracking=True)
+    state = fields.Selection([('draft', 'draft'), ('confirm', 'Confirmed'), ('done', 'Done'), ('cancel', 'Cancel')], default='draft', string='Status', Tracking=True)
+
+    appointment_ids = fields.One2many('hospital.appointment', 'patient_id', string="Appointments")
+
 
     ## functions ##
 
@@ -41,18 +44,48 @@ class HospitalPatient(models.Model):
     def _compute_age(self):
         for record in self:
             if record.date_of_birth and record.date_of_birth.year < date.today().year:
-                #tempAge = date.today().year - record.date_of_birth.year
                 record.age = date.today().year - record.date_of_birth.year
             else:
                 record.age = 0
     ## end dependant functions ##
+
     ## get functions ##
     def name_get(self):
         res = []
         for rec in self:
             name = "[" + str(rec.id) + "] " + rec.name
-            res.append((rec.id,name))
+            res.append((rec.id, name))
         return res
     ## end get functions ##
+
+    ## overrides ##
+    def unlink(self):
+        for rec in self:
+            if rec.state == 'done':
+                raise ValidationError(f"you cannot delete use {rec.name} as it is in Done state")
+            super(HospitalPatient, rec).unlink()
+
+    def copy(self, default={}):
+        if not default.get('name'):
+            default['name'] = f"{self.name} (COPY)"
+        return super(HospitalPatient, self).copy(default)
+    ## end overrides ##
+
+    ## constrains ##
+
+    @api.constrains('name')
+    def check_name(self):
+        patient = self.env['hospital.patient']
+        for rec in self:
+            search = patient.search([('name', '=', rec.name), ('id', '!=', rec.id)])
+            if search:
+                raise ValidationError(f'the name {rec.name} already exists')
+
+    @api.constrains('age')
+    def check_age(self):
+        for rec in self:
+            if rec.age == 0:
+                raise ValidationError('the age cannot be 0')
+    ## end constrains ##
 
     ## end functions ##
