@@ -1,6 +1,6 @@
 from datetime import date
 from odoo import api, fields, models
-from odoo.odoo import exceptions
+from odoo.exceptions import ValidationError
 
 
 class HospitalDoctors(models.Model):

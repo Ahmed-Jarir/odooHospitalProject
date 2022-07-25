@@ -31,7 +31,8 @@
                         <button id="make_appointment" name="%(om_hospital.create_appointment_wizard_action)d" string="make an appointment"
                                 class="btn-primary"
                                 states="done"
-                                type="action"/>
+                                type="action"
+                                />
                         <button id="action_confirm" name="action_confirm" string="confirm" class="btn-primary"
                                 states="draft"
                                 type="object"
@@ -54,18 +55,18 @@
 
                     <div class="oe_title">
                         <h1>
-                            <field name="name"/>
+                            <field name="name" attrs="{'readonly': [('state','=','done')]}"/>
                         </h1>
                     </div>
                     <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
-                            <field name="date_of_birth"/>
+                            <field name="date_of_birth" attrs="{'readonly': [('state','=','done')]}"/>
                             <field name="age"/>
                         </group>
                         <group>
                             <field name="ref"/>
-                            <field name="gender" invisible="context.get('hide_gender')"/>
+                            <field name="gender" invisible="context.get('hide_gender')" attrs="{'readonly': [('state','=','done')]}"/>
                             <field name="active" invisible="1"/>
                         </group>
                     </group>

@@ -12,7 +12,7 @@
     'description': """
     hospital management system
     """,
-    'depends': ["mail"],
+    'depends': ["mail", "report_xlsx"],
     'data': [
         'security/ir.model.access.csv',
         'views/menu.xml',
@@ -22,7 +22,8 @@
         'views/female_patient_view.xml',
         'views/male_patient_view.xml',
         'views/appointment_view.xml',
-
+        'report/report.xml',
+        'report/patient_card.xml',
     ],
     'demo': [
     ],

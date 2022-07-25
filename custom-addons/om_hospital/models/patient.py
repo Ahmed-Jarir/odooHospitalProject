@@ -5,13 +5,13 @@ from odoo.exceptions import ValidationError
 
 class HospitalPatient(models.Model):
     _name = "hospital.patient"
-    _inherit=["mail.thread", "mail.activity.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "hospital_patient"
 
     image = fields.Binary(string="Patient image")
 
     name = fields.Char(string='Name', required=True, translate=True, Tracking=True)
-    ref = fields.Char(string='Reference', Tracking=True)
+    ref = fields.Many2one("hospital.doctors", string="reference", required=True)
     date_of_birth = fields.Date(string='Date of birth')
 
     age = fields.Integer(string='Age', compute='_compute_age', Tracking=True, store=True)
@@ -63,6 +63,8 @@ class HospitalPatient(models.Model):
         for rec in self:
             if rec.state == 'done':
                 raise ValidationError(f"you cannot delete use {rec.name} as it is in Done state")
+            for appointment in rec.appointment_ids:
+                appointment.unlink()
             super(HospitalPatient, rec).unlink()
 
     def copy(self, default={}):
