@@ -26,6 +26,8 @@
             <form>
                 <sheet>
 
+                    <widget name="web_ribbon" title="Archived" color="bg-danger"
+                            attrs="{'invisible': [('active', '=',True)]}"/>
                     <header>
                         <!--buttons -->
                         <button id="make_appointment" name="%(om_hospital.create_appointment_wizard_action)d" string="make an appointment"

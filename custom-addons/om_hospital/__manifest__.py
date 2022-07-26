@@ -22,8 +22,11 @@
         'views/female_patient_view.xml',
         'views/male_patient_view.xml',
         'views/appointment_view.xml',
+        'views/partner.xml',
         'report/report.xml',
         'report/patient_card.xml',
+        'report/appointment_details.xml',
+        'views/appointment_report_wizard_view.xml',
     ],
     'demo': [
     ],

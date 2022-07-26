@@ -20,4 +20,9 @@
         parent="menu_hospital_root"
         sequence="2"
         />
+    <menuitem id="menu_reports_master"
+       name="Reports"
+       parent="menu_hospital_root"
+       sequence="4"
+       />
 </odoo>

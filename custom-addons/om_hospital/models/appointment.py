@@ -13,6 +13,7 @@ class HospitalAppointment(models.Model):
 
 
     gender = fields.Selection(related='patient_id.gender')
+    age = fields.Integer(related='patient_id.age')
     appointment_time = fields.Datetime(string='Appointment Time', default=fields.Datetime.now)
     booking_date = fields.Date(string="Booking Date", default=fields.Date.context_today)
 
