@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class CreateAppointmentReportWizard(models.TransientModel):
@@ -24,7 +25,6 @@ class CreateAppointmentReportWizard(models.TransientModel):
         if self.date_to:
             domain.append(("appointment_time", '<=', self.date_to))
         appointments = self.env['hospital.appointment'].search_read(domain)
-        print()
         vals = {
             'form': self.read()[0],
             'appointments': appointments,
@@ -35,3 +35,8 @@ class CreateAppointmentReportWizard(models.TransientModel):
     #     action = self.env.ref('om_hospital.action_hospital_appointment').read()[0]
     #     action['domain'] = [('patient_id', '=', self.patient_id.id)]
     #     return action
+    @api.constrains('date_from')
+    def check_date_from_and_date_to(self):
+        for rec in self:
+            if rec.date_from and rec.date_to and rec.date_from > rec.date_to:
+                raise ValidationError('\'date from\' cannot be after \'date to\'')

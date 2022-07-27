@@ -31,5 +31,6 @@ class PatientCardXlsx(models.AbstractModel):
 
             sheet.write(row, col, 'Reference', bold)
             if obj.ref:
-                sheet.write(row, col + 1, obj.ref)
+                sheet.write(row, col + 1, obj.ref.name)
+
             row += 2

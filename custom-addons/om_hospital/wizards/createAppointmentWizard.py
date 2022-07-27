@@ -1,5 +1,6 @@
 from odoo import api, fields, models
-
+from odoo.exceptions import ValidationError
+from datetime import date
 
 class CreateAppointmentWizard(models.TransientModel):
     _name = "create.appointment.wizard"
@@ -28,3 +29,9 @@ class CreateAppointmentWizard(models.TransientModel):
         action = self.env.ref('om_hospital.action_hospital_appointment').read()[0]
         action['domain'] = [('patient_id', '=', self.patient_id.id)]
         return action
+
+    @api.constrains('appointment_time')
+    def check_appointment_time(self):
+        for rec in self:
+            if rec.appointment_time.date() < date.today():
+                raise ValidationError('appointment time cannot be before today\'s date')

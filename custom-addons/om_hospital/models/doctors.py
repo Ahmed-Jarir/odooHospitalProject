@@ -2,6 +2,7 @@ from datetime import date
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
+import re
 
 class HospitalDoctors(models.Model):
     _name = "hospital.doctors"
@@ -11,15 +12,26 @@ class HospitalDoctors(models.Model):
 
     image = fields.Binary(string="Doctors image")
 
-    name = fields.Char(string='Name', required=True, translate=True, Tracking=True)
-    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Gender', Tracking=True)
+    name = fields.text(string='Name', required=True, translate=True, tracking=True)
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Gender', tracking=True)
 
-    date_of_birth = fields.Date(string='Date of birth', Tracking=True)
-    age = fields.Integer(string='Age', compute='_compute_age', Tracking=True, store=True)
+    date_of_birth = fields.Date(string='Date of birth', tracking=True)
+    age = fields.Integer(string='Age', compute='_compute_age', tracking=True, store=True)
+
+    sub = {'AH': "Ahmed", 'JA': 'Jarir'}
 
     ## functions ##
 
     ## dependant functions ##
+
+    @api.onchange('name')
+    def on_change_name(self):
+        print('triggered')
+        for i in self.sub.keys():
+            reg = f'{i}\s'
+            if bool(re.compile(reg).match(self.name)):
+                self.name = re.sub(reg, self.sub[i], self.name)
+
     @api.depends('date_of_birth')
     def _compute_age(self):
         for record in self:

@@ -10,18 +10,18 @@ class HospitalPatient(models.Model):
 
     image = fields.Binary(string="Patient image")
 
-    name = fields.Char(string='Name', required=True, translate=True, Tracking=True)
+    name = fields.Char(string='Name', required=True, translate=True, tracking=True)
     ref = fields.Many2one("hospital.doctors", string="reference", required=True)
     date_of_birth = fields.Date(string='Date of birth')
 
-    age = fields.Integer(string='Age', compute='_compute_age', Tracking=True, store=True)
-    gender = fields.Selection([('male','Male'), ('female','Female')],string= 'Gender', Tracking=True)
+    age = fields.Integer(string='Age', compute='_compute_age', tracking=True, store=True)
+    gender = fields.Selection([('male','Male'), ('female','Female')],string= 'Gender', tracking=True)
     active = fields.Boolean(string='active', default=True)
 
-    state = fields.Selection([('draft', 'draft'), ('confirm', 'Confirmed'), ('done', 'Done'), ('cancel', 'Cancel')], default='draft', string='Status', Tracking=True)
+    state = fields.Selection([('draft', 'draft'), ('confirm', 'Confirmed'), ('done', 'Done'), ('cancel', 'Cancel')],
+                             default='draft', string='Status', tracking=True)
 
     appointment_ids = fields.One2many('hospital.appointment', 'patient_id', string="Appointments")
-
 
     ## functions ##
 
