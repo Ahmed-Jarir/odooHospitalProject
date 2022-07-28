@@ -1,1 +1,1 @@
-from . import test_patient
+from . import test_patient, test_Create_Appointment_Wiz

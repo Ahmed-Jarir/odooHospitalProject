@@ -10,7 +10,7 @@ class HospitalPatient(models.Model):
 
     image = fields.Binary(string="Patient image")
 
-    name = fields.Char(string='Name', required=True, translate=True, tracking=True)
+    patient_name = fields.Char(string='Name', required=True, translate=True, tracking=True)
     ref = fields.Many2one("hospital.doctors", string="reference", required=True)
     date_of_birth = fields.Date(string='Date of birth')
 
@@ -38,6 +38,9 @@ class HospitalPatient(models.Model):
 
     ## action functions ##
     ## end action functions ##
+    def setDOB(self,date):
+        self.date_of_birth = date
+        print(self.age)
 
     ## dependant functions ##
     @api.depends('date_of_birth')
@@ -53,7 +56,7 @@ class HospitalPatient(models.Model):
     def name_get(self):
         res = []
         for rec in self:
-            name = "[" + str(rec.id) + "] " + rec.name
+            name = "[" + str(rec.id) + "] " + rec.patient_name
             res.append((rec.id, name))
         return res
     ## end get functions ##
@@ -62,32 +65,32 @@ class HospitalPatient(models.Model):
     def unlink(self):
         for rec in self:
             if rec.state == 'done':
-                raise ValidationError(f"you cannot delete use {rec.name} as it is in Done state")
+                raise ValidationError(f"you cannot delete use {rec.patient_name} as it is in Done state")
             for appointment in rec.appointment_ids:
                 appointment.unlink()
             super(HospitalPatient, rec).unlink()
 
     def copy(self, default={}):
-        if not default.get('name'):
-            default['name'] = f"{self.name} (COPY)"
+        if not default.get('patient_name'):
+            default['patient_name'] = f"{self.patient_name} (COPY)"
         return super(HospitalPatient, self).copy(default)
     ## end overrides ##
 
     ## constrains ##
 
-    @api.constrains('name')
+    @api.constrains('patient_name')
     def check_name(self):
         patient = self.env['hospital.patient']
         for rec in self:
-            search = patient.search([('name', '=', rec.name), ('id', '!=', rec.id)])
+            search = patient.search([('patient_name', '=', rec.patient_name), ('id', '!=', rec.id)])
             if search:
-                raise ValidationError(f'the name {rec.name} already exists')
+                raise ValidationError(f'the name {rec.patient_name} already exists')
 
     @api.constrains('age')
     def check_age(self):
         for rec in self:
             if rec.age == 0:
-                raise ValidationError('the age cannot be 0')
+                raise ValidationError('age cannot be 0')
     ## end constrains ##
 
     ## end functions ##

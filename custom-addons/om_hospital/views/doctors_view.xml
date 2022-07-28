@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!--TREE-->
     <record model="ir.ui.view" id="view_hospital_doctors_tree">
         <field name="name">hospital.doctors.tree</field>
         <field name="model">hospital.doctors</field>
@@ -12,6 +13,9 @@
             </tree>
         </field>
     </record>
+    <!--END TREE-->
+
+    <!--FORM-->
     <record model="ir.ui.view" id="view_hospital_doctors_form">
         <field name="name">hospital.doctors.form</field>
         <field name="model">hospital.doctors</field>
@@ -43,6 +47,9 @@
             </form>
         </field>
     </record>
+    <!--END FORM-->
+
+    <!--SEARCH-->
     <record model="ir.ui.view" id="view_hospital_doctors_search">
         <field name="name">hospital.doctors.search</field>
         <field name="model">hospital.doctors</field>
@@ -68,6 +75,7 @@
 
         </field>
     </record>
+    <!--END SEARCH-->
     <record id="action_hospital_doctors" model="ir.actions.act_window">
         <field name="name">Doctors</field>
         <field name="type">ir.actions.act_window</field>
@@ -82,11 +90,13 @@
         </field>
     </record>
 
+    <!--MENU-->
     <menuitem id="menu_doctors"
               name="Doctors"
               action="action_hospital_doctors"
               parent="menu_doctors_master"
               sequence="0"
     />
+    <!--END MENU-->
 
 </odoo>
