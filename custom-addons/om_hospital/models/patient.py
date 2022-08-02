@@ -27,11 +27,22 @@ class HospitalPatient(models.Model):
 
     ## state functions ##
     def action_confirm(self):
+        # if self.state == "draft":
         self.state = 'confirm'
+        # else:
+        #     raise ValidationError(f"{self.patient_name} is not in draft state")
     def action_done(self):
+        # if self.state == "confirm":
         self.state = 'done'
+        # else:
+            # raise ValidationError(f"{self.patient_name} is not in confirmed state")
+
     def action_draft(self):
+        # if self.state == "cancel":
         self.state = 'draft'
+        # else:
+        #     raise ValidationError(f"{self.patient_name} is not in confirmed state")
+
     def action_cancel(self):
         self.state = 'cancel'
     ## end of state functions ##

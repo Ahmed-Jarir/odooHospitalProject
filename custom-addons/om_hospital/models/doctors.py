@@ -53,9 +53,9 @@ class HospitalDoctors(models.Model):
 
     @api.constrains('name')
     def check_name(self):
-        patient = self.env['hospital.patient']
+        doc = self.env['hospital.doctors']
         for rec in self:
-            search = patient.search([('name', '=', rec.name), ('id', '!=', rec.id)])
+            search = doc.search([('name', '=', rec.name), ('id', '!=', rec.id)])
             if search:
                 raise ValidationError(f'the name {rec.name} already exists')
 
